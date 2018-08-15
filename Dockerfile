@@ -2,18 +2,26 @@
 FROM microsoft/dotnet:2.1.400-sdk-stretch as builder
 WORKDIR /sln
 
+# Copy all files
 COPY ./DockerDotTest.sln ./
 COPY ./tests ./tests
-COPY ./src ./src
+COPY ./tools ./tools
 
-RUN dotnet restore
-
+#Build in release mode
 RUN dotnet build -c Release
 
-#Stage 2 - EXECUTE TESTS
-FROM microsoft/dotnet:2.1.2-aspnetcore-runtime
+#RUN mkdir /sln && mkdir /sln/tests && mkdir /sln/tools && mkdir /dockerdottest
 
-WORKDIR /app
+RUN mkdir /dockerdottest
+
 ENV ASPNETCORE_ENVIRONMENT Production
-COPY --from=builder ./app/ .
 
+RUN chmod +x /sln/tools/run_tests.sh
+
+VOLUME ["/dockerdottest/"]
+
+ENTRYPOINT ["/sln/tools/run_tests.sh"]
+
+#docker run --name test -v /data/tests:/dockerdottest/ b5160c481651
+#docker run --name test -it --entrypoint=/bin/bash -v /data/tests:/dockerdottest/ b5160c481651
+#docker run -it <image> /bin/bash

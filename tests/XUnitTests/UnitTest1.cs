@@ -18,5 +18,31 @@ namespace XUnitTests
             //Assert
             result.Should().BeTrue();
         }
+        
+        [Fact]
+        public void Test2()
+        {
+            //Arrange
+            var one = 1;
+
+            //Act
+            var result = one == 1;
+
+            //Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void TestFail()
+        {
+            //Arrange
+            var one = 1;
+
+            //Act
+            var result = one == 1;
+
+            //Assert
+            result.Should().BeFalse();
+        }
     }
 }
