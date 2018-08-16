@@ -5,7 +5,6 @@ WORKDIR /sln
 # Copy all files
 COPY ./DockerDotTest.sln ./
 COPY ./tests ./tests
-COPY ./tools ./tools
 
 #Build in release mode
 RUN dotnet build -c Release
@@ -16,12 +15,14 @@ RUN mkdir /dockerdottest
 
 ENV ASPNETCORE_ENVIRONMENT Production
 
+COPY ./tools ./tools
+
 RUN chmod +x /sln/tools/run_tests.sh
 
 VOLUME ["/dockerdottest/"]
 
 ENTRYPOINT ["/sln/tools/run_tests.sh"]
 
-#docker run --name test -v /data/tests:/dockerdottest/ b5160c481651
-#docker run --name test -it --entrypoint=/bin/bash -v /data/tests:/dockerdottest/ b5160c481651
+#docker run --name test -v /data/tests:/dockerdottest/ 93707521dd1a
+#docker run --name test -it --entrypoint=/bin/bash -v /data/tests:/dockerdottest/ 55f745a3a41e
 #docker run -it <image> /bin/bash
